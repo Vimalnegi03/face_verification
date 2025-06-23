@@ -409,7 +409,7 @@ def register_employee():
             image_paths.append(filepath)
 
             try:
-                result = DeepFace.represent(img_path=filepath, model_name='Facenet')[0]
+                result = DeepFace.represent(img_path=filepath, model_name='VGG-Face')[0]
                 embeddings.append(result['embedding'])
             except Exception as e:
                 # Clean up saved files if embedding fails
