@@ -308,7 +308,7 @@ def recognize_face(current_user_id):
             # Use the same model that was used during registration
             temp_embedding = DeepFace.represent(
                 img_path=temp_path,
-                model_name='SFace',  # Must match your registration model
+                model_name='VGG-Face',  # Must match your registration model
                 enforce_detection=True
             )[0]['embedding']
             
