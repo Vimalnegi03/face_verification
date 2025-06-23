@@ -71,12 +71,12 @@ def token_required(f):
 
 def get_db_connection():
     return pymysql.connect(
-        host='localhost',
-        user='root',
-        password='Vim@l2003',
-        db='FaceRecognition',
-        cursorclass=pymysql.cursors.DictCursor
-    )
+    host='mt-uat-lighthouse.cal82oikkybf.ap-south-1.rds.amazonaws.com',
+    user='FaceRecongition',
+    password='password@123',
+    db='FaceRecognition',
+    cursorclass=pymysql.cursors.DictCursor
+)
 
 def load_employees():
     """Load employees from JSON file"""
