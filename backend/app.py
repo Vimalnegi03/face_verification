@@ -213,7 +213,7 @@ def login():
         token = jwt.encode({
             'user_id': user['id'],
             'email': user['email'],
-            'exp': datetime.now(timezone.utc) + timedelta(hours=24)
+            'exp':int((datetime.now(timezone.utc) + timedelta(hours=24)).timestamp())
         }, SECRET_KEY, algorithm='HS256')
         print(f"Generated token for user {user['id']}: {token}")
         # Create response with user data
