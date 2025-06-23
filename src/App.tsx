@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Camera, Users, Clock, BarChart3, User, CheckCircle, XCircle, UserPlus ,User2Icon} from 'lucide-react';
+import { Camera, Users, Clock, BarChart3, User, CheckCircle, XCircle, UserPlus, User2Icon, Menu, X } from 'lucide-react';
 import CameraCapture from './components/CameraCapture';
 import EmployeeList from './components/EmployeeList';
 import AttendanceRecords from './components/AttendanceRecords';
@@ -29,6 +29,7 @@ export type AttendanceRecord = {
 
 function App() {
   const [activeTab, setActiveTab] = useState('camera');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [employees, setEmployees] = useState<Employee[]>([
     {
       id: '1',
@@ -108,10 +109,9 @@ function App() {
     { id: 'camera', label: 'Camera', icon: Camera },
     { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
     { id: 'employees', label: 'Employees', icon: Users },
-  { id: 'register', label: 'Register', icon: UserPlus },
+    { id: 'register', label: 'Register', icon: UserPlus },
     { id: 'records', label: 'Records', icon: Clock },
     { id: 'profile', label: 'Login', icon: User2Icon }
-
   ];
 
   return (
@@ -126,11 +126,11 @@ function App() {
               </div>
               <div>
                 <h1 className="text-xl font-bold text-slate-900">FaceAttend</h1>
-                <p className="text-sm text-slate-500">Face Recognition Attendance</p>
+                <p className="text-sm text-slate-500 hidden sm:block">Face Recognition Attendance</p>
               </div>
             </div>
             
-            <div className="flex items-center space-x-4">
+            <div className="hidden md:flex items-center space-x-4">
               <div className="flex items-center space-x-2 bg-green-50 px-3 py-1 rounded-full">
                 <CheckCircle className="w-4 h-4 text-green-600" />
                 <span className="text-sm font-medium text-green-700">
@@ -144,6 +144,20 @@ function App() {
                 </span>
               </div>
             </div>
+
+            {/* Mobile menu button */}
+            <div className="md:hidden flex items-center">
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="inline-flex items-center justify-center p-2 rounded-md text-slate-500 hover:text-slate-900 focus:outline-none"
+              >
+                {mobileMenuOpen ? (
+                  <X className="h-6 w-6" />
+                ) : (
+                  <Menu className="h-6 w-6" />
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </header>
@@ -151,7 +165,8 @@ function App() {
       {/* Navigation */}
       <nav className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex space-x-8">
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex space-x-8">
             {tabs.map((tab) => {
               const Icon = tab.icon;
               return (
@@ -170,21 +185,62 @@ function App() {
               );
             })}
           </div>
+
+          {/* Mobile Navigation */}
+          {mobileMenuOpen && (
+            <div className="md:hidden grid grid-cols-2 gap-2 py-4">
+              {tabs.map((tab) => {
+                const Icon = tab.icon;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => {
+                      setActiveTab(tab.id);
+                      setMobileMenuOpen(false);
+                    }}
+                    className={`flex items-center justify-center space-x-2 py-3 px-4 rounded-md font-medium text-sm transition-colors ${
+                      activeTab === tab.id
+                        ? 'bg-blue-50 text-blue-600'
+                        : 'text-slate-700 hover:bg-slate-100'
+                    }`}
+                  >
+                    <Icon className="w-5 h-5" />
+                    <span>{tab.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>
       </nav>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        {/* Mobile status indicators */}
+        <div className="md:hidden flex justify-between mb-4">
+          <div className="flex items-center space-x-2 bg-green-50 px-3 py-1 rounded-full">
+            <CheckCircle className="w-4 h-4 text-green-600" />
+            <span className="text-sm font-medium text-green-700">
+              {employees.filter(e => e.isPresent).length} Present
+            </span>
+          </div>
+          <div className="flex items-center space-x-2 bg-red-50 px-3 py-1 rounded-full">
+            <XCircle className="w-4 h-4 text-red-600" />
+            <span className="text-sm font-medium text-red-700">
+              {employees.filter(e => !e.isPresent).length} Absent
+            </span>
+          </div>
+        </div>
+
         {activeTab === 'register' && (
-    <EmployeeRegistration 
-    />
-  )}
- {activeTab === 'camera' && (
-    <CameraCapture 
-      employee={employees[0]} 
-      onAttendanceMarked={(type) => handleAttendanceMarked(employees[0], type)} 
-    />
-  )}
+          <EmployeeRegistration />
+        )}
+        {activeTab === 'camera' && (
+          <CameraCapture 
+            employee={employees[0]} 
+            onAttendanceMarked={(type) => handleAttendanceMarked(employees[0], type)} 
+          />
+        )}
         {activeTab === 'dashboard' && (
           <Dashboard 
             employees={employees} 
@@ -197,8 +253,7 @@ function App() {
         {activeTab === 'records' && (
           <AttendanceRecords records={attendanceRecords} />
         )}
-        {
-          activeTab === 'profile' && <Navigate to="/login" replace />       }
+        {activeTab === 'profile' && <Navigate to="/login" replace />}
       </main>
     </div>
   );
