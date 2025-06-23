@@ -14,7 +14,8 @@ import requests
 import jwt
 from functools import wraps
 app = Flask(__name__)
-CORS(app, supports_credentials=True)
+CORS(app, supports_credentials=True,
+     origins=["https://face-verification-1-xy37.onrender.com"])
 
 # Create directories for storing employee images and data
 os.makedirs('backend/employee_images', exist_ok=True)
@@ -235,137 +236,7 @@ def login():
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)}), 500
 
-# @app.route('/api/recognize', methods=['POST'])
-# @token_required
-# def recognize_face(current_user_id):
-    """Recognize face using DeepFace (protected route)"""
-    try:
-        print(f"Recognizing face for user: {current_user_id}")
-        data = request.json
-        image_base64 = data.get('image')
-        
-        if not image_base64:
-            return jsonify({'error': 'No image provided'}), 400
-        
-        # Convert base64 to image
-        try:
-            # Handle data URL (if present)
-            if ',' in image_base64:
-                image_base64 = image_base64.split(',')[1]
-            
-            # Decode base64 string
-            img_bytes = base64.b64decode(image_base64)
-            nparr = np.frombuffer(img_bytes, np.uint8)
-            img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-            
-            if img is None:
-                raise ValueError("Failed to decode image")
-                
-            print("Successfully converted base64 to image")
-        except Exception as e:
-            print(f"Image conversion error: {str(e)}")
-            return jsonify({'error': f'Image processing failed: {str(e)}'}), 400
-        
-        # Save temporary image for DeepFace processing current persons image for comparison
-        temp_dir = 'backend/temp'
-        os.makedirs(temp_dir, exist_ok=True)
-        temp_path = os.path.join(temp_dir, 'temp_capture.jpg')
-        cv2.imwrite(temp_path, img)
-        
-        if not os.path.exists(temp_path):
-            raise ValueError("Failed to save temporary image")
-        
-        print(f"Temporary image saved to {temp_path}")
-        
-        # Load employees
-        # employees = [{ "id": "emp_001",
-        # "name": "John Doe",
-        # "department": "Engineering",
-        # "email": "john.doe@example.com",
-        # "avatar": "https://example.com/avatars/john.jpg",
-        # "isPresent": False,
-        # "image_path": "backend/employee_images/temp_capture.jpg"}]
-        # print(employees)
-        # if not employees:
-        #     return jsonify({'error': 'No employees registered'}), 400
-        response = requests.get('http://localhost:8000/api/employees')
-        if response.status_code != 200:
-            return jsonify({'error': 'Failed to fetch employees'}), 500
 
-        raw_employees = response.json()
-
-        # Map the response to your expected structure
-        employees = []
-        for emp in raw_employees:
-            employees.append({
-                "id": emp.get("id"),
-                "name": emp.get("name"),
-                "department": emp.get("department"),
-                "email": emp.get("email"),
-                "avatar": "",  # add logic if you store avatar URLs
-                "isPresent": False,
-                "image_path": emp.get("image_path")  # or your logic
-            })
-
-        print(employees)
-        
-        best_match = None
-        highest_confidence =  0.6
-        
-        # Compare with each employee's image
-        for employee in employees:
-            try:
-                if not os.path.exists(employee['image_path']):
-                    print(f"Missing image for employee {employee['name']}")
-                    continue
-
-                if employee['id'] == current_user_id:
-                    # Use DeepFace to verify faces
-                    result = DeepFace.verify(
-                        img1_path=temp_path,
-                        img2_path=employee['image_path'],
-                        model_name='VGG-Face',
-                        detector_backend='opencv',
-                        distance_metric='cosine',
-                        enforce_detection=True,  # Changed to True to ensure face detection
-                        align=True 
-                    )
-                    print(temp_path)
-                    print(employee['image_path'])
-                    
-                    # Calculate confidence (1 - distance for cosine)
-                    confidence = 1 - result['distance']
-                    print(f"Comparison with {employee['name']}: confidence={confidence:.2f}")
-                    
-                    # Check if this is a match and has higher confidence
-                    if result['verified'] and confidence > 0.7 and confidence > highest_confidence:
-                        highest_confidence = confidence
-                        best_match = employee
-                    
-            except Exception as e:
-                print(f"Error comparing with employee {employee['name']}: {str(e)}")
-                continue
-        
-        # Clean up temporary file
-        
-        
-        if best_match and highest_confidence > 0.6:  # Confidence threshold
-            print(f"Best match: {best_match['name']} (confidence: {highest_confidence:.2f})")
-            return jsonify({
-                'recognized': True,
-                'employee': best_match,
-                'confidence': float(highest_confidence)
-            })
-        else:
-            print("No matching employee found")
-            return jsonify({
-                'recognized': False,
-                'message': 'No matching employee found'
-            })
-            
-    except Exception as e:
-        print(f"Error in recognize_face: {str(e)}")
-        return jsonify({'error': str(e)}), 500
 
 
 @app.route('/api/recognize', methods=['POST'])
