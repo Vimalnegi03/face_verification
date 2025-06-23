@@ -228,11 +228,13 @@ def login():
 
         # Set HttpOnly, Secure cookie
         response.set_cookie(
-            'auth_token',
-            value=token,
-            httponly=True,
-            max_age=86400  # 24 hours in seconds
-        )
+    'auth_token',
+    value=token,
+    httponly=True,
+    max_age=86400,           # 24 hours in seconds
+    secure=True,             # ✅ Required for HTTPS
+    samesite='None'          # ✅ Required for cross-site cookie
+)
         
         return response
         
