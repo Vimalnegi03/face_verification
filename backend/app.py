@@ -189,7 +189,10 @@ def add_employee():
         return jsonify({'error': str(e)}), 500
 
 from flask import make_response
-from datetime import datetime, timedelta
+from datetime import datetime, timezone, timedelta
+
+
+
 
 @app.route('/api/login', methods=['POST'])
 def login():
@@ -210,7 +213,7 @@ def login():
         token = jwt.encode({
             'user_id': user['id'],
             'email': user['email'],
-            'exp': datetime.utcnow() + timedelta(hours=24)
+            'exp': datetime.now(timezone.utc) + timedelta(hours=24)
         }, SECRET_KEY, algorithm='HS256')
         print(f"Generated token for user {user['id']}: {token}")
         # Create response with user data
