@@ -1,1 +1,1 @@
-export const url='https://face-verification-22ub.onrender.com'
+export const url='https://face-verification-se8p.onrender.com'
