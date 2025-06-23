@@ -308,7 +308,7 @@ def recognize_face(current_user_id):
             # Use the same model that was used during registration
             temp_embedding = DeepFace.represent(
                 img_path=temp_path,
-                model_name='VGG-Face',  # Must match your registration model
+                model_name='Facenet',  # Must match your registration model
                 enforce_detection=True
             )[0]['embedding']
             
@@ -409,7 +409,7 @@ def register_employee():
             image_paths.append(filepath)
 
             try:
-                result = DeepFace.represent(img_path=filepath, model_name='VGG-Face')[0]
+                result = DeepFace.represent(img_path=filepath, model_name='Facenet')[0]
                 embeddings.append(result['embedding'])
             except Exception as e:
                 # Clean up saved files if embedding fails
