@@ -134,7 +134,7 @@ export default function EmployeeRegistration() {
     <div className="max-w-md mx-auto p-4 bg-white rounded-lg shadow">
       <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
         <UserPlus className="text-blue-500" />
-        Employee Registration
+       Student Registration
       </h2>
 
       {error && (
@@ -147,7 +147,7 @@ export default function EmployeeRegistration() {
       {registrationResult?.success && (
         <div className="p-3 mb-4 bg-green-50 text-green-800 rounded-lg flex items-center gap-2">
           <CheckCircle className="text-green-600" />
-          <span className="font-semibold">Employee registered successfully!</span>
+          <span className="font-semibold">Student registered successfully!</span>
         </div>
       )}
 
@@ -164,13 +164,13 @@ export default function EmployeeRegistration() {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Department</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">ITI</label>
           <input
             type="text"
             value={employee.department}
             onChange={(e) => setEmployee({...employee, department: e.target.value})}
             className="w-full px-3 py-2 border border-gray-300 rounded-md"
-            placeholder="Engineering"
+            placeholder="ITI Tehri"
             required
           />
         </div>
@@ -259,7 +259,7 @@ export default function EmployeeRegistration() {
             </>
           ) : (
             <>
-              <UserPlus size={16} /> Register Employee
+              <UserPlus size={16} /> Register Student
             </>
           )}
         </button>

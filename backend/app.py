@@ -15,7 +15,7 @@ import jwt
 from functools import wraps
 app = Flask(__name__)
 CORS(app, supports_credentials=True,
-     origins=["https://face-verification-1-xy37.onrender.com"])
+     origins=["http://localhost:5173"])
 
 # Create directories for storing employee images and data
 os.makedirs('backend/employee_images', exist_ok=True)
@@ -496,7 +496,7 @@ def mark_attendance(current_user_id):
                 # 2. Insert attendance record
                 attendance_id = str(uuid.uuid4())
                 insert_query = """
-                    INSERT INTO attendance 
+                    INSERT INTO Attendance 
                     (id, employee_id, employee_name, type, confidence, timestamp)
                     VALUES (%s, %s, %s, %s, %s, %s)
                 """
@@ -511,7 +511,7 @@ def mark_attendance(current_user_id):
                 
                 # 3. Get the created record
                 cursor.execute(
-                    "SELECT * FROM attendance WHERE id = %s",
+                    "SELECT * FROM Attendance WHERE id = %s",
                     (attendance_id,)
                 )
                 new_record = cursor.fetchone()
@@ -549,7 +549,7 @@ def get_attendance():
                 cursor.execute("""
                     SELECT id, employee_id, employee_name, type, 
                            timestamp, confidence 
-                    FROM attendance
+                    FROM Attendance
                     ORDER BY timestamp DESC
                 """)
                 attendance_records = cursor.fetchall()

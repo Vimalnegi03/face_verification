@@ -1,1 +1,1 @@
-export const url='https://face-verification-97yb.onrender.com'
+export const url='http://localhost:8000'

@@ -1,6 +1,7 @@
 import  { useRef, useEffect, useState } from 'react';
 import { Camera, Square, CheckCircle, AlertCircle } from 'lucide-react';
 import { url } from '../url';
+
 interface Employee {
   id: string;
   name: string;
@@ -33,6 +34,7 @@ export default function CameraCapture({ employee, onAttendanceMarked }: CameraCa
   const [error, setError] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [recognitionResult, setRecognitionResult] = useState<RecognitionResult | null>(null);
+   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   console.log(employee||"hero");
   
   const startCamera = async () => {
@@ -145,6 +147,9 @@ export default function CameraCapture({ employee, onAttendanceMarked }: CameraCa
       const attendanceData = await attendanceResponse.json();
       console.log('Attendance recorded:', attendanceData);
 
+     // Simple success toast
+      setSuccessMessage(`Attendance marked successfully for ${recognition.employee.name}!`);
+
       // Step 3: Update UI
       onAttendanceMarked('check-in');
       setCapturedImage(null);
@@ -177,6 +182,14 @@ export default function CameraCapture({ employee, onAttendanceMarked }: CameraCa
           {error}
         </div>
       )}
+
+      {successMessage && (
+        <div className="p-3 mb-4 bg-green-50 text-green-800 rounded-lg flex items-center gap-2">
+          <CheckCircle className="text-green-600" />
+          {successMessage}
+        </div>
+      )}
+
 
       {recognitionResult?.recognized && (
         <div className="p-3 mb-4 bg-green-50 text-green-800 rounded-lg">

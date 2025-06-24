@@ -90,7 +90,7 @@ const EmployeeList: React.FC = () => {
   if (error) {
     return (
       <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 text-center">
-        <div className="text-red-500 mb-4">Error loading employees: {error}</div>
+        <div className="text-red-500 mb-4">Error loading students: {error}</div>
         <button 
           onClick={() => window.location.reload()}
           className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
@@ -108,14 +108,14 @@ const EmployeeList: React.FC = () => {
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-semibold text-slate-900 flex items-center space-x-2">
             <Users className="w-6 h-6 text-blue-600" />
-            <span>Employee Directory</span>
+            <span>Student Directory</span>
           </h2>
           <button 
             onClick={() => navigate('/register')}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
           >
             <UserPlus className="w-4 h-4" />
-            <span>Add Employee</span>
+            <span>Add Student</span>
           </button>
         </div>
 
@@ -180,7 +180,7 @@ const EmployeeList: React.FC = () => {
                       ? 'bg-green-100 text-green-700'
                       : 'bg-red-100 text-red-700'
                   }`}>
-                    {employee.isPresent ? (
+                    {employee ? (
                       <>
                         <CheckCircle className="w-3 h-3" />
                         <span>Present</span>
@@ -222,9 +222,9 @@ const EmployeeList: React.FC = () => {
         ) : (
           <div className="text-center py-12">
             <Users className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-slate-900 mb-2">No employees found</h3>
+            <h3 className="text-lg font-medium text-slate-900 mb-2">No students found</h3>
             <p className="text-slate-500 mb-6">
-              {searchTerm ? 'Try adjusting your search terms.' : 'No employees match the selected filter.'}
+              {searchTerm ? 'Try adjusting your search terms.' : 'No student match the selected filter.'}
             </p>
             {searchTerm && (
               <button

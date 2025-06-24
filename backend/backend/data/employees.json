@@ -1,12 +1,12 @@
 {
-  "id": "20d24397-34ab-47a3-b4c2-0d0909d3c90d",
-  "name": "Nirmal Negi",
-  "department": "Dev",
-  "email": "nirmal@gmail.com",
+  "id": "eca99e86-6ed3-4ff5-a46a-d822d1bd8842",
+  "name": "vimal",
+  "department": "v",
+  "email": "vimal@gmail.com",
   "image_paths": [
-    "backend/employee_images/20d24397-34ab-47a3-b4c2-0d0909d3c90d/Nirmal_Negi_1.jpg",
-    "backend/employee_images/20d24397-34ab-47a3-b4c2-0d0909d3c90d/Nirmal_Negi_2.jpg",
-    "backend/employee_images/20d24397-34ab-47a3-b4c2-0d0909d3c90d/Nirmal_Negi_3.jpg"
+    "backend/employee_images\\eca99e86-6ed3-4ff5-a46a-d822d1bd8842\\vimal_1.jpg",
+    "backend/employee_images\\eca99e86-6ed3-4ff5-a46a-d822d1bd8842\\vimal_2.jpg",
+    "backend/employee_images\\eca99e86-6ed3-4ff5-a46a-d822d1bd8842\\vimal_3.jpg"
   ],
-  "registration_date": "2025-06-20T15:03:10.351319"
+  "registration_date": "2025-06-23T21:21:38.701413"
 }

@@ -108,7 +108,7 @@ function App() {
   const tabs = [
     { id: 'camera', label: 'Camera', icon: Camera },
     { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
-    { id: 'employees', label: 'Employees', icon: Users },
+    { id: 'employees', label: 'Students', icon: Users },
     { id: 'register', label: 'Register', icon: UserPlus },
     { id: 'records', label: 'Records', icon: Clock },
     { id: 'profile', label: 'Login', icon: User2Icon }
@@ -126,7 +126,7 @@ function App() {
               </div>
               <div>
                 <h1 className="text-xl font-bold text-slate-900">FaceAttend</h1>
-                <p className="text-sm text-slate-500 hidden sm:block">Face Recognition Attendance</p>
+                <p className="text-sm text-slate-500 hidden sm:block">Students Attendance</p>
               </div>
             </div>
             
